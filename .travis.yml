@@ -1,0 +1,20 @@
+sudo: required
+
+services:
+  - docker
+
+language: go
+go:
+  - 1.11.x
+install:
+  - go get -v github.com/golangci/golangci-lint/cmd/golangci-lint
+script:
+  - export GO111MODULE=on
+  - go build
+  - golangci-lint run --disable-all --deadline=10m
+    --enable=gofmt
+    --enable=golint
+    --enable=vet
+    --enable=gosimple
+    --enable=unconvert
+  - docker build -t bitum-project/bitumwebapi .
